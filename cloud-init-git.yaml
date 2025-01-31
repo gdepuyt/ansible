@@ -1,0 +1,32 @@
+  #cloud-config
+  packages:
+    - git
+    - zsh
+    - ntp
+    - nano
+    - wget
+    - curl
+    - ansible  # Add ansible here!
+
+  write_files:
+    - path: /tmp/my_playbook.yml
+      content: |
+        ---
+        - hosts: localhost
+          become: true
+          tasks:
+            - name: Example task
+              file:
+                path: /tmp/test_dir_inline
+                state: directory
+                mode: 0755
+
+  ansible:
+  install_method: distro
+  package_name: ansible.noarch
+  pull:
+   #accept_host_key: true
+    url: " https://github.com/gdepuyt/ansible.git"
+    playbook_name: "playbook.yaml"
+
+  

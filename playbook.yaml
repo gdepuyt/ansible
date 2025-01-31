@@ -3,6 +3,6 @@ become: true
 tasks:
   - name: Example task
     file:
-      path: /tmp/test_dir
+      path: /tmp/test_dir_git
       state: directory
       mode: 0755
