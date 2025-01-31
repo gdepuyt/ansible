@@ -1,0 +1,25 @@
+  #cloud-config
+  packages:
+    - git
+    - zsh
+    - ntp
+    - nano
+    - wget
+    - curl
+    - ansible  # Add ansible here!
+
+  write_files:
+    - path: /tmp/my_playbook.yml
+      content: |
+        ---
+        - hosts: localhost
+          become: true
+          tasks:
+            - name: Example task
+              file:
+                path: /tmp/test_dir
+                state: directory
+                mode: 0755
+
+  runcmd:
+    - ansible-playbook /tmp/my_playbook.yml -k
