@@ -1,5 +1,5 @@
   #cloud-config
-  packages:
+packages:
     - git
     - zsh
     - ntp
@@ -8,25 +8,22 @@
     - curl
     - ansible  # Add ansible here!
 
-  write_files:
-    - path: /tmp/my_playbook.yml
-      content: |
-        ---
-        - hosts: localhost
-          become: true
-          tasks:
-            - name: Example task
-              file:
-                path: /tmp/test_dir_inline
-                state: directory
-                mode: 0755
+users:
+  - default
+  - name: ansible
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: wheel
 
-  ansible:
-  install_method: distro
-  package_name: ansible.noarch
-  pull:
-   #accept_host_key: true
-    url: " https://github.com/gdepuyt/ansible.git"
-    playbook_name: "playbook.yaml"
+write_files:
+    - content: |
+        #!/bin/bash
+        cd /home/ansible
+        git clone https://github.com/gdepuyt/ansible
+        ansible-playbook -c local -i "127.0.0.1," ./ansible/playbook.yaml
+      path: /tmp/init-with-ansible.sh
+      permissions: 0700
 
-  
+runcmd:
+  - 'sudo mv /tmp/init-with-ansible.sh /home/ansible/init-with-ansible.sh'
+  - 'sudo chown ansible:ansible /home/ansible/init-with-ansible.sh'
+  - 'sudo -u ansible /bin/bash -c "/home/ansible/init-with-ansible.sh > /home/ansible/init-with-ansible.log 2>&1"'

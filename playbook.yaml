@@ -1,8 +1,7 @@
-hosts: localhost
-become: true
-tasks:
-  - name: Example task
-    file:
-      path: /tmp/test_dir_git
-      state: directory
-      mode: 0755
+- hosts: 127.0.0.1
+  become: true
+  tasks:
+    - name: Create a directory
+      file:
+        path: /tmp/my_dir
+        state: directory
